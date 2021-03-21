@@ -1,0 +1,43 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="angularApp.entry.home.title">Entries</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-entry" [routerLink]="['/entry/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="angularApp.entry.home.createLabel">
+            Create a new Entry
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="entries?.length === 0">
+        <span jhiTranslate="angularApp.entry.home.notFound">No entries found</span>
+    </div>
+
+    <div class="table-responsive" *ngIf="entries.length > 0">
+      <div infinite-scroll (scrolled)="loadPage(page+1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <div *ngFor="let entry of entries; trackBy:trackId">
+                <a [routerLink]="['/entry',entry.id,'view']"><h2>{{entry.title}}</h2></a>
+                <div><h3>Posted on </h3><h4 style="color: greenyellow;"> {{entry.date|date:'short'}}</h4><h4 style="color:blueviolet;"> by {{entry.blog|json}}</h4></div>
+                <div [innerHTML]="entry.content"></div>
+                <div class="btn-group mb-2 mt-1">
+                    <button type="submit" [routerLink]="[entry.id,'edit']" class="btn btn-secondary btn-lg">
+                    <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                </button>
+                <button type="submit" 
+                [routerLink]="['/',{outlets:{popup:entry.id+'/delete'}}]"
+                queryParamsHandling="merge"
+                class="btn btn-danger btn-lg">
+                    <fa-icon [icon]="'times'"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                </button>
+                </div>
+            </div>
+      </div>
+    </div>
+</div>
