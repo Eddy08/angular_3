@@ -1,0 +1,16 @@
+to create an image
+mvnw package -Pprod verify jib:dockerBuild -DskipTests
+
+to start all the containers: app and db
+docker-compose -f src/main/docker/app.yml up
+
+
+
+docker commit 9206d1f6cc8e bhardwajharsh08/monolithic-app:app
+
+docker commit fd777ec783ff bhardwajharsh08/monolithic-app:db
+
+docker push bhardwajharsh08/monolithic-app:app
+
+docker push bhardwajharsh08/monolithic-app:db
+
